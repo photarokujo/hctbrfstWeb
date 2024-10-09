@@ -47,47 +47,65 @@ export default function ContributorsShowcase() {
     fetchContributors()
   }, [])
 
-  if (loading) {
-    return <div className="text-center py-10 text-white">Loading contributors...</div>
-  }
-
-  if (error) {
-    return <div className="text-center py-10 text-red-500">{error}</div>
-  }
-
   return (
-    <div className="w-full min-h-screen bg-gray-900 p-8">
-      <h1 className="text-4xl font-bold text-center text-white mb-12">
-        Hacktoberfest 2024 Contributors
-      </h1>
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
-        {contributors.map((contributor) => (
-          <div
-            key={contributor.login}
-            className="bg-gray-800 border border-red-600 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
-          >
-            <img
-              src={contributor.avatar_url}
-              alt={`${contributor.login}'s avatar`}
-              className="w-full object-cover rounded-t-lg"
-            />
-            <div className="p-6 text-center">
-              <h2 className="text-xl max-lg:text-sm font-bold text-white mb-2">{contributor.login}</h2>
-              <p className="text-sm text-gray-400 mb-4">
-                Contributions: <span className="text-red-500">{contributor.contributions}</span>
-              </p>
-              <a
-                href={contributor.html_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-6 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors duration-300"
+    <>
+      <div className="w-full min-h-screen bg-[#0A0E0C] p-8">
+        <h1 className="text-4xl font-bold text-center text-white mb-12">
+          Backslash Hacktoberfest 2024 Contributors
+        </h1>
+
+        {loading ? (
+          <div className="text-center py-10 text-white">Loading contributors...</div>
+        ) : error ? (
+          <div className="text-center py-10 text-red-500">{error}</div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:scale-90">
+            {contributors.map((contributor) => (
+              <div
+                key={contributor.login}
+                className="bg-gray-800 border border-red-600 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
-                View Profile
-              </a>
-            </div>
+                <img
+                  src={contributor.avatar_url}
+                  alt={`${contributor.login}'s avatar`}
+                  className="w-full object-cover rounded-t-lg"
+                />
+                <div className="p-6 text-center">
+                  <h2 className="text-xl max-lg:text-sm font-bold text-white mb-2">{contributor.login}</h2>
+                  <p className="text-sm text-gray-400 mb-4">
+                    Contributions: <span className="text-red-500">{contributor.contributions}</span>
+                  </p>
+                  <a
+                    href={contributor.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-6 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors duration-300"
+                  >
+                    View Profile
+                  </a>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
-    </div>
+
+      <footer className="bg-[#0A0E0C] text-[#F4E9D8] py-8 border-t border-[#162414]">
+        <div className="container mx-auto px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+          <div className="flex flex-col">
+            <h3 className="text-2xl font-semibold mb-4 text-[#AEF359]">About Hacktoberfest</h3>
+            <p className="text-md text-[#B2B2B2]">
+              Hacktoberfest is a month-long celebration of open source software, powered by DigitalOcean. Join developers around the globe by contributing to open-source projects and making your mark in the community.
+            </p>
+          </div>
+          
+          <div className="flex flex-col items-end">
+            <h3 className="text-2xl font-semibold mb-4 text-[#AEF359]">Contact</h3>
+            <p className="text-md text-[#B2B2B2] mb-2">Email: <a href="mailto:backslash@thapar.edu" className="text-[#AEF359] hover:underline">backslash@thapar.edu</a></p>
+            <p className="text-sm text-[#B2B2B2]">Address: Hoga kisi jungle me</p>
+          </div>
+        </div>
+      </footer>
+    </>
   )
 }
