@@ -1,11 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { GithubIcon } from 'lucide-react'
-import "./App.css"
 
-const REPO_OWNER = 'photarokujo'
-const REPO_NAME = 'RPG-Game'
+const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN
+const REPO_OWNER = import.meta.env.VITE_REPO_OWNER
+const REPO_NAME = import.meta.env.VITE_REPO_NAME
 
 interface Contributor {
   login: string
@@ -22,14 +21,24 @@ export default function ContributorsShowcase() {
   useEffect(() => {
     const fetchContributors = async () => {
       try {
-        const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contributors`)
+        if (!GITHUB_TOKEN || !REPO_OWNER || !REPO_NAME) {
+          throw new Error('Missing environment variables')
+        }
+
+        const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contributors`, {
+          headers: {
+            'Authorization': `token ${GITHUB_TOKEN}`
+          }
+        })
+
         if (!response.ok) {
           throw new Error('Failed to fetch contributors')
         }
+
         const data = await response.json()
         setContributors(data)
       } catch (err) {
-        setError('Error fetching contributors. Please try again later.')
+        setError(`Error fetching contributors. Please try again later. ${err}`)
       } finally {
         setLoading(false)
       }
@@ -47,33 +56,32 @@ export default function ContributorsShowcase() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="w-full min-h-screen bg-gray-900 p-8">
       <h1 className="text-4xl font-bold text-center text-white mb-12">
         Hacktoberfest 2024 Contributors
       </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
         {contributors.map((contributor) => (
           <div
             key={contributor.login}
-            className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            className="bg-gray-800 border border-red-600 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
           >
             <img
               src={contributor.avatar_url}
               alt={`${contributor.login}'s avatar`}
-              className="w-full h-48 object-cover"
+              className="w-full object-cover rounded-t-lg"
             />
             <div className="p-6 text-center">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{contributor.login}</h2>
-              <p className="text-sm text-gray-600 mb-4">
+              <h2 className="text-xl max-lg:text-sm font-bold text-white mb-2">{contributor.login}</h2>
+              <p className="text-sm text-gray-400 mb-4">
                 Contributions: <span className="text-red-500">{contributor.contributions}</span>
               </p>
               <a
                 href={contributor.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center px-5 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors duration-300"
+                className="inline-block px-6 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors duration-300"
               >
-                <GithubIcon className="mr-2 h-5 w-5" />
                 View Profile
               </a>
             </div>
