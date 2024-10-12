@@ -101,7 +101,7 @@ export default function ContributorsShowcase() {
           
           <div className="flex flex-col items-end">
             <h3 className="text-2xl font-semibold mb-4 text-[#AEF359]">Contact</h3>
-            <p className="text-md text-[#B2B2B2] mb-2">Email: <a href="mailto:backslash@thapar.edu" className="text-[#AEF359] hover:underline">backslash@thapar.edu</a></p>
+            <p className="text-md text-[#B2B2B2] mb-2">Email: <a href="mailto:backslash@thapar.edu" className="text-[#AEF359] hover:underline">backslash_sc@thapar.edu</a></p>
             <p className="text-sm text-[#B2B2B2]">Address: Hoga kisi jungle me</p>
           </div>
         </div>
